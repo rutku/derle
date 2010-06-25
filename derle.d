@@ -131,7 +131,7 @@ void ProjeOluştur(string pAdi){
   dosya.writefln(" writefln(\"Merhaba\");");
   dosya.writefln("}");
   File index = new File(projeDizini~"/index.txt",FileMode.OutNew);
-  index.writefln("arg= ");
+  index.writefln("arg= -w -wi");
   index.writefln("build= main.d");
 }
 
