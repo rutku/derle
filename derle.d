@@ -114,6 +114,7 @@ void ProjeDerle(string pAdi){
 
     }else{
       dout.writefln("index.txt Yok !");
+      dout.writefln(getcwd());
     }
   }else{
     dout.writefln(projeDizini~" Projesi yok !");
