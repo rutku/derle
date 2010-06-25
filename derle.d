@@ -15,7 +15,9 @@ void main(string[] args){
   * -Yd = Yeni Dosya oluşturur. Kullanımı -Yd dcurses.d
   */
   parametre ~="dmd";
-  dProjeleri ~= getcwd();
+  dProjeleri ~= getenv("HOME")~"/DProjeleri";
+  
+  Kontrol();
   if(args.length >1){
     switch (args[1]) {
    case "-a":
@@ -48,6 +50,13 @@ void Yardım(){
   dout.writefln("-Yd = Yeni Dosya oluşturur. Kullanımı: derle -Yd proje.d");
 }
 
+void Kontrol(){
+  if(!exists(dProjeleri)){
+    dout.writefln(dProjeleri~" oluşturuldu.");
+    mkdir(dProjeleri);
+  }
+}
+
 void Derle(string[] args){
   /*
   * -p = Projeyi derler. Kullanımı : dmd -a -w -p proje
@@ -72,8 +81,9 @@ void Derle(string[] args){
 void ProjeDerle(string pAdi){
   char[] argümanlar;
   char[] derle;
-  string projeDizini = pAdi~"/";
-
+  string projeDizini = dProjeleri~"/"~pAdi;
+  if(exists(projeDizini)){
+    chdir(projeDizini);
     string index = "index.txt";
     if(exists(index)){
       std.stream.File dosya =
@@ -105,6 +115,9 @@ void ProjeDerle(string pAdi){
     }else{
       dout.writefln("index.txt Yok !");
     }
+  }else{
+    dout.writefln(projeDizini~" Projesi yok !");
+  }
 }
 
 void ProjeOluştur(string pAdi){
