@@ -4,9 +4,10 @@ import std.array;
 import std.file;
 import std.process;
 import std.string;
+import std.path;
 
 string parametre;
-
+string dProjeleri; 
 void main(string[] args){
   /*
   * -a = Argümanlar. Kullanımı -a -w -L-lncurses -p derle
@@ -14,7 +15,7 @@ void main(string[] args){
   * -Yd = Yeni Dosya oluşturur. Kullanımı -Yd dcurses.d
   */
   parametre ~="dmd";
-  
+  dProjeleri ~= getcwd();
  switch (args[1]) {
    case "-a":
      Derle(args);
@@ -25,6 +26,9 @@ void main(string[] args){
    case "-Yd":
      DosyaOluştur(args[2],args[3]);
      break;
+   case "-p":
+     ProjeDerle(args[2]);
+     break;
      
     default:
         dout.writefln("-a = Argümanlar. Kullanımı:derle -a -w -L... -p proje");
@@ -32,6 +36,7 @@ void main(string[] args){
 	dout.writefln("-Yd = Yeni Dosya oluşturur. Kullanımı: derle -Yd proje.d");
     }
 }
+
 
 void Derle(string[] args){
   /*
@@ -55,24 +60,55 @@ void Derle(string[] args){
 }
 
 void ProjeDerle(string pAdi){
-  if(exists(pAdi)){
-    dout.writefln(pAdi~" adlı dizin var");
-  }else{
-    dout.writefln(pAdi~" adlı dizin yok");
-  }
+  char[] argümanlar;
+  char[] derle;
+  string projeDizini = pAdi~"/";
+
+    string index = "index.txt";
+    if(exists(index)){
+      std.stream.File dosya =
+        new std.stream.File(index, FileMode.In);
+	bool argümanlarOkundu=false;
+      while (dosya.available) {
+        char[] satır = dosya.readLine();
+	if(argümanlarOkundu!=true){
+	  //1. satırından "arg=" karakter dizisini çıkarıyor.
+	    for(int i = 4;i<satır.length;i++){
+	    argümanlar ~=satır[i];
+	    argümanlarOkundu=true;
+	  }
+	}else{
+	  //2. satırdan "build=" dizisini çıkarıyor.
+	   for(int i = 7;i<satır.length;i++){
+	    derle ~=satır[i];
+	   }
+	}
+	
+      }
+      dout.writefln(argümanlar); 
+      parametre ~= argümanlar~" "~derle;
+      dout.writefln(parametre);
+      system(parametre);
+      string çalıştır = replace(cast(string)derle,".d","");
+      system("./"~çalıştır);
+
+    }else{
+      dout.writefln("index.txt Yok !");
+    }
 }
 
 void ProjeOluştur(string pAdi){
-  string projeDizini = getcwd()~"/"~pAdi;
+  string projeDizini = dProjeleri~"/"~pAdi;
+  dout.writefln(projeDizini);
   mkdir(projeDizini);
   File dosya = new File(projeDizini~"/main.d",FileMode.OutNew);
   dosya.writefln("import std.stdio;");
   dosya.writefln("void main(){");
-  dosya.writefln(" writefln('Merhaba');");
+  dosya.writefln(" writefln(\"Merhaba\");");
   dosya.writefln("}");
   File index = new File(projeDizini~"/index.txt",FileMode.OutNew);
-  index.writefln("argümanlar: ");
-  index.writefln("derle: main.d");
+  index.writefln("arg= ");
+  index.writefln("build= main.d");
 }
 
 void DosyaDerle(string dAdi){
@@ -87,5 +123,5 @@ void DosyaOluştur(string dAdi,string pAdi){
   dosya.writefln("class "~dAdi~"{");
   dosya.writefln("}");
   File index = new File(projeDizini~"/"~"index.txt",FileMode.Append);
-  index.writefln("sınıf: "~dAdi);
+  index.writefln("class: "~dAdi);
 }
