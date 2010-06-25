@@ -16,7 +16,8 @@ void main(string[] args){
   */
   parametre ~="dmd";
   dProjeleri ~= getcwd();
- switch (args[1]) {
+  if(args.length >1){
+    switch (args[1]) {
    case "-a":
      Derle(args);
      break;
@@ -31,12 +32,21 @@ void main(string[] args){
      break;
      
     default:
-        dout.writefln("-a = Argümanlar. Kullanımı:derle -a -w -L... -p proje");
-	dout.writefln("-Y = Yeni proje oluşturur. Kullanımı:derle -Y proje");
-	dout.writefln("-Yd = Yeni Dosya oluşturur. Kullanımı: derle -Yd proje.d");
+        Yardım();
     }
+  }else{
+    Yardım();
+  }
+ 
 }
 
+
+void Yardım(){
+  dout.writefln("-p = Kullanımı:derle -p proje");
+  dout.writefln("-a = Kullanımı:derle -a -w -L... -p proje");
+  dout.writefln("-Y = Yeni proje oluşturur. Kullanımı:derle -Y proje");
+  dout.writefln("-Yd = Yeni Dosya oluşturur. Kullanımı: derle -Yd proje.d");
+}
 
 void Derle(string[] args){
   /*
