@@ -1,0 +1,23 @@
+Derle: D programlama dili için geliştirilmiş proje yöneticisidir.
+Kullanıcı dizininde DProjeleri dizinine projeleri oluşturur ve oradan kontrolünü sağlar.
+Programı kurmak için gerekenler;
+İşletim Sistemi = Linux
+Derleyici = DMD
+Sürümü = 2.46 ve üzeri
+
+Programı derlemek için;
+dmd derle.d
+Kullanabilmek için;
+
+Bulunduğunu dizine gidin;
+./derle
+komutuyla çalıştırın.
+
+Proje oluşturmak için;
+
+./derle -Y yeniProje
+
+Proje derlemek için;
+
+./derle -p yeniProje
+
