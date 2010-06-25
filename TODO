@@ -1,5 +1,7 @@
 +Proje Derleme
--İndex.txt e argüman desteği verilmesi
++İndex.txt e argüman desteği verilmesi
+-Projeye yeni dosya Ekleme
+-Proje Adı ve Dosya Adında boşluk desteği verilmesi
 -Git Desteği
 -Svn Desteği
 -Ftp Desteği
